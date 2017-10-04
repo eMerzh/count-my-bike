@@ -44,11 +44,11 @@ h1 {
 .counter:nth-last-of-type(2) {
   left: 60%;
 }
-.counter div {
+.counter .nbr {
   color: white;
   font-size: 70px;
 }
-.counter span {
+.counter .label {
   font-size: 12px;
   color: white;
 }

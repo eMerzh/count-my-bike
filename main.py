@@ -2,6 +2,7 @@
 
 import csv
 import datetime
+import json
 import os
 import time
 from StringIO import StringIO
@@ -16,6 +17,7 @@ db = MySQLDatabase(os.environ.get("DB_NAME"), user=os.environ.get("DB_USER"),
                    host=os.environ.get("DB_HOST"), password=os.environ.get("DB_PASS"), charset='utf8mb4')
 
 API_URL = 'http://data-mobility.brussels/geoserver/bm_bike/wfs?service=wfs&version=1.1.0&request=GetFeature&typeName=bm_bike:rt_counting&outputFormat=csv'
+EXPORT_PATH = 'public/data.json'
 
 
 class BikeCounter(Model):
@@ -97,5 +99,26 @@ def fetch():
         item.save()
 
 
+def export():
+    """ Export all pumped data to file """
+    data = {'ts': [], 'hour': {}, 'day': {}}
+    query = BikeCounter.select(fn.Unix_Timestamp(BikeCounter.created_date).alias('tick'), BikeCounter.year_cnt_delta)
+
+    # Put im Time Serie
+    for row in query:
+        data['ts'].append([row.tick * 1000, row.year_cnt_delta])
+
+    # TODO: WROOOONG check last_seen_date TOO
+    data['hour']['counter'] = BikeCounter.select(
+        BikeCounter.hour_cnt).order_by(BikeCounter.created_date.desc()).scalar()
+    data['day']['counter'] = BikeCounter.select(
+        BikeCounter.day_cnt).order_by(BikeCounter.created_date.desc()).scalar()
+
+    # Dump it to disk
+    with open(EXPORT_PATH, 'w') as outfile:
+        json.dump(data, outfile)
+
+
 if __name__ == "__main__":
     fetch()
+    export()

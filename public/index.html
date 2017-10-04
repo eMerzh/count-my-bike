@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
     <script src="https://code.highcharts.com/highcharts.src.js"></script>
     <script src="main.js"></script>
     <title>Count My Bike</title>
@@ -20,13 +22,13 @@
         </h1>
     </header>
 
-    <section class="counter">
-        <div>12 <span class="trend">+12%</span></div>
-        <span>Today</span>
+    <section class="counter day-counter">
+        <span class="nbr">-</span> <span class="trend">+12%</span>
+        <span class="label">Today</span>
     </section>
-    <section class="counter">
-        <div>9 <span class="trend">-15%</span></div>
-        <span>This hour</span>
+    <section class="counter hour-counter">
+        <div><span class="nbr">-</span> <span class="trend">-15%</span></div>
+        <span class="label">This hour</span>
     </section>
 
     <section id="chart">
