@@ -1,0 +1,71 @@
+body {
+  font-family: Helvetica Neue, Helvetica, Ubuntu, Roboto, Noto, Segoe UI, Arial,
+    sans-serif;
+
+  background-image: url("rikki-chan-122572.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-color: #464646;
+}
+
+header {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+}
+
+h1 {
+  font-size: 50px;
+  color: white;
+  display: inline;
+  text-shadow: 1px 1px 1px black;
+
+  background-color: #edc330;
+  letter-spacing: 0.15em;
+  line-height: 1.6em;
+}
+.counter {
+  background-color: black;
+  opacity: 0.8;
+  border-radius: 5px;
+  text-align: center;
+
+  width: 150px;
+  height: 150px;
+  margin: 20px;
+  position: absolute;
+  top: 5%;
+}
+.counter:first-of-type {
+  left: 40%;
+}
+.counter:nth-last-of-type(2) {
+  left: 60%;
+}
+.counter div {
+  color: white;
+  font-size: 70px;
+}
+.counter span {
+  font-size: 12px;
+  color: white;
+}
+.counter .trend {
+  font-size: x-small;
+  vertical-align: super;
+  background: #16ce34;
+  border-radius: 5px;
+  padding: 3px;
+}
+#chart {
+  background-color: black;
+  opacity: 0.8;
+  border-radius: 5px;
+  margin-top: 25vw;
+  margin-left: 37%;
+  margin-right: 5%;
+  height: 20vw;
+  min-height: 200px;
+}
