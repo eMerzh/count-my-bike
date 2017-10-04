@@ -39,17 +39,24 @@ h1 {
   top: 5%;
 }
 .counter:first-of-type {
-  left: 40%;
+  left: 37%;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }
 .counter:nth-last-of-type(2) {
-  left: 60%;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: 1px solid darkgray;
+  left: calc(37% + 150px);
 }
 .counter .nbr {
   color: white;
+  display: block;
   font-size: 70px;
 }
 .counter .label {
   font-size: 12px;
+  display: block;
   color: white;
 }
 .counter .trend {
