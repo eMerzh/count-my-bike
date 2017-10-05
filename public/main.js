@@ -1,9 +1,11 @@
 $(function() {
   $.get("data.json", function(data) {
     initChart(data.ts);
-    console.log("ss", data.day.counter);
+
     $(".day-counter .nbr").text(data.day.counter);
+    $(".day-counter .trend").text(data.day.trend + "%");
     $(".hour-counter .nbr").text(data.hour.counter);
+    $(".hour-counter .trend").text(data.hour.trend + "%");
   });
 
   function initChart(serie_data) {

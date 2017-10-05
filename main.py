@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import csv
-import datetime
 import json
 import os
 import time
+from datetime import datetime, timedelta
 from StringIO import StringIO
 
 import requests
@@ -59,8 +59,8 @@ class BikeCounter(Model):
 
     cnt_date = DateTimeField()
 
-    created_date = DateTimeField(default=datetime.datetime.now, index=True)
-    last_seen_date = DateTimeField(default=datetime.datetime.now)
+    created_date = DateTimeField(default=datetime.now, index=True)
+    last_seen_date = DateTimeField(default=datetime.now)
 
 
 def fetch():
@@ -86,17 +86,24 @@ def fetch():
 
         delta = 0
         if last_counter:
-            ctn_date = datetime.datetime.fromtimestamp(time.mktime(time.strptime(row['cnt_date'], "%Y-%m-%dT%H:%M:%S")))
+            ctn_date = datetime.fromtimestamp(time.mktime(time.strptime(row['cnt_date'], "%Y-%m-%dT%H:%M:%S")))
 
             delta = int(row['year_cnt']) - last_counter.year_cnt
             if last_counter.cnt_date == ctn_date:
-                last_counter.last_seen_date = datetime.datetime.now()
+                last_counter.last_seen_date = datetime.now()
                 last_counter.save()
                 continue
 
         item = BikeCounter.create(year_cnt_delta=delta, **row)
 
         item.save()
+
+
+def fetch_count(start, end):
+    """ Fetch the number of cyclist during this period """
+    return BikeCounter.select(fn.coalesce(fn.sum(BikeCounter.year_cnt_delta), 0)) \
+        .where(BikeCounter.created_date.between(start, end)) \
+        .scalar()
 
 
 def export():
@@ -111,8 +118,23 @@ def export():
     # TODO: WROOOONG check last_seen_date TOO
     data['hour']['counter'] = BikeCounter.select(
         BikeCounter.hour_cnt).order_by(BikeCounter.created_date.desc()).scalar()
+
+    old_counter = fetch_count(datetime.now() - timedelta(hours=2), datetime.now() - timedelta(hours=1))
+    new_counter = fetch_count(datetime.now() - timedelta(hours=1), datetime.now())
+    if old_counter == 0:
+        trend = 0
+    else:
+        trend = ((new_counter - old_counter) / old_counter) * 100
+    data['hour']['trend'] = int(trend)
     data['day']['counter'] = BikeCounter.select(
         BikeCounter.day_cnt).order_by(BikeCounter.created_date.desc()).scalar()
+    old_counter = fetch_count(datetime.now() - timedelta(days=2), datetime.now() - timedelta(days=1))
+    new_counter = fetch_count(datetime.now() - timedelta(days=1), datetime.now())
+    if old_counter == 0:
+        trend = 0
+    else:
+        trend = ((new_counter - old_counter) / old_counter) * 100
+    data['day']['trend'] = int(trend)
 
     # Dump it to disk
     with open(EXPORT_PATH, 'w') as outfile:
