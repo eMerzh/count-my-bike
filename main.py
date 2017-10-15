@@ -17,7 +17,8 @@ db = MySQLDatabase(os.environ.get("DB_NAME"), user=os.environ.get("DB_USER"),
                    host=os.environ.get("DB_HOST"), password=os.environ.get("DB_PASS"), charset='utf8mb4')
 
 API_URL = 'http://data-mobility.brussels/geoserver/bm_bike/wfs?service=wfs&version=1.1.0&request=GetFeature&typeName=bm_bike:rt_counting&outputFormat=csv'
-EXPORT_PATH = 'public/data.json'
+dirpath = os.path.dirname(__file__)
+EXPORT_PATH = os.path.join(dirpath, 'public/data.json')
 
 
 class BikeCounter(Model):
