@@ -50,12 +50,11 @@ $(function() {
 
   function heatmapChart(data) {
     var margin = { top: 50, right: 0, bottom: 100, left: 30 };
-    var containerWidth = 600;
-    var containerHeight = 400;
+    var containerWidth = 960;
+    var containerHeight = 430;
     var width = containerWidth - margin.left - margin.right;
     var height = containerHeight - margin.top - margin.bottom;
     var gridSize = Math.floor(width / 24);
-    var legendElementWidth = gridSize * 2;
 
     var svg = d3
       .select("#chart")
@@ -151,6 +150,12 @@ $(function() {
 
     cards.exit().remove();
 
+    buildLegend(svg, colorScale, gridSize, height);
+  }
+
+  function buildLegend(svg, colorScale, gridSize, height) {
+    var legendElementWidth = gridSize * 2;
+
     var legend = svg
       .selectAll(".legend")
       .data([0].concat(colorScale.quantiles()), function(d) {
@@ -219,8 +224,6 @@ $(function() {
         value: item.value
       };
     });
-
-    console.log("h", heatData);
 
     heatmapChart(heatData);
   }
