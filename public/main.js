@@ -22,36 +22,38 @@ $(function() {
   ]; // alternatively colorbrewer.YlGnBu[9]
   var days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
   var times = [
-    "1a",
-    "2a",
-    "3a",
-    "4a",
-    "5a",
-    "6a",
-    "7a",
-    "8a",
-    "9a",
-    "10a",
-    "11a",
-    "12a",
-    "1p",
-    "2p",
-    "3p",
-    "4p",
-    "5p",
-    "6p",
-    "7p",
-    "8p",
-    "9p",
-    "10p",
-    "11p",
-    "12p"
+    "0h",
+    "1h",
+    "2h",
+    "3h",
+    "4h",
+    "5h",
+    "6h",
+    "7h",
+    "8h",
+    "9h",
+    "10h",
+    "11h",
+    "12h",
+    "13h",
+    "14h",
+    "15h",
+    "16h",
+    "17h",
+    "18h",
+    "19h",
+    "20h",
+    "21h",
+    "22h",
+    "23h"
   ];
 
   function heatmapChart(data) {
     var margin = { top: 50, right: 0, bottom: 100, left: 30 };
-    var width = 600 - margin.left - margin.right;
-    var height = 430 - margin.top - margin.bottom;
+    var containerWidth = 600;
+    var containerHeight = 400;
+    var width = containerWidth - margin.left - margin.right;
+    var height = containerHeight - margin.top - margin.bottom;
     var gridSize = Math.floor(width / 24);
     var legendElementWidth = gridSize * 2;
 
@@ -190,6 +192,14 @@ $(function() {
     var heatData = [];
     serie_data.map(function(item) {
       var itemDateTime = new Date(item[0]);
+      var sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+      if (itemDateTime < sevenDaysAgo) {
+        // skip older days
+        return;
+      }
+
       var itemDay = itemDateTime.getDay();
       var itemHour = itemDateTime.getHours();
       var itemValue = item[1];
@@ -203,7 +213,11 @@ $(function() {
       heatData.push({ date: itemDay, hour: itemHour, value: itemValue });
     });
     heatData = heatData.map(function(item) {
-      return { day: item.date + 1, hour: item.hour + 1, value: item.value };
+      return {
+        day: item.date == 0 ? 7 : item.date,
+        hour: item.hour + 1,
+        value: item.value
+      };
     });
 
     console.log("h", heatData);
