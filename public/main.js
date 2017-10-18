@@ -57,7 +57,8 @@ $(function() {
     var width = containerWidth - margin.left - margin.right;
     var height = containerHeight - margin.bottom;
 
-    var cellSize = Math.floor(width / 24);
+    var cellMargin = 3;
+    var cellSize = Math.floor(width / 24) - cellMargin;
 
     svg = d3
       .select(chartDiv)
@@ -77,7 +78,7 @@ $(function() {
       })
       .attr("x", 0)
       .attr("y", function(d, i) {
-        return i * cellSize;
+        return i * (cellSize + cellMargin);
       })
       .style("text-anchor", "end")
       .attr("transform", "translate(-6," + cellSize / 1.5 + ")")
@@ -96,7 +97,7 @@ $(function() {
         return d;
       })
       .attr("x", function(d, i) {
-        return i * cellSize;
+        return i * (cellSize + cellMargin);
       })
       .attr("y", 0)
       .style("text-anchor", "middle")
@@ -118,20 +119,20 @@ $(function() {
       ])
       .range(colors);
 
-    var cards = svg.selectAll(".hour").data(data, function(d) {
+    var dataCells = svg.selectAll(".hour").data(data, function(d) {
       return d.day + ":" + d.hour;
     });
 
-    cards.append("title");
+    dataCells.append("title");
 
-    cards
+    dataCells
       .enter()
       .append("rect")
       .attr("x", function(d) {
-        return (d.hour - 1) * cellSize;
+        return (d.hour - 1) * (cellSize + cellMargin);
       })
       .attr("y", function(d) {
-        return (d.day - 1) * cellSize;
+        return (d.day - 1) * (cellSize + cellMargin);
       })
       .attr("rx", 4)
       .attr("ry", 4)
@@ -140,18 +141,18 @@ $(function() {
       .attr("height", cellSize)
       .style("fill", colors[0]);
 
-    cards
+    dataCells
       .transition()
       .duration(1000)
       .style("fill", function(d) {
         return colorScale(d.value);
       });
 
-    cards.select("title").text(function(d) {
+    dataCells.select("title").text(function(d) {
       return d.value;
     });
 
-    cards.exit().remove();
+    dataCells.exit().remove();
 
     buildLegend(svg, colorScale, cellSize, height);
   }

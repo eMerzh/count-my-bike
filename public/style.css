@@ -18,42 +18,34 @@ header {
 }
 
 h1 {
-  font-size: 50px;
+  font-size: 80px;
   color: white;
-  display: inline;
-  text-shadow: 1px 1px 1px black;
-
-  background-color: #edc330;
-  letter-spacing: 0.15em;
-  line-height: 1.6em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+.counters {
+  left: 37%;
+  right: 5%;
+  position: absolute;
+  top: 5%;
+  display: flex;
+  justify-content: space-around;
 }
 .counter {
-  background-color: black;
-  opacity: 0.8;
-  border-radius: 5px;
   text-align: center;
-
   width: 150px;
   height: 150px;
   margin: 20px;
-  position: absolute;
-  top: 5%;
 }
-.counter:first-of-type {
-  left: 37%;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-.counter:nth-last-of-type(2) {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-left: 1px solid darkgray;
-  left: calc(37% + 150px);
+.counter span {
+  margin-bottom: 7px;
 }
 .counter .nbr {
   color: white;
   display: block;
   font-size: 70px;
+  border-bottom: 5px solid #95d0a7;
+  text-shadow: 1px 1px gray;
 }
 .counter .label {
   font-size: 12px;
@@ -63,34 +55,51 @@ h1 {
 .counter .trend {
   font-size: x-small;
   vertical-align: super;
-  background: #16ce34;
+  background: #95d0a7;
   border-radius: 5px;
   padding: 3px;
 }
 .chart-section {
   opacity: 0.8;
-  border-radius: 5px;
-  margin-top: 25vw;
+  margin-top: 15vw;
   margin-left: 37%;
   margin-right: 5%;
   min-width: 550px;
   border: 1px solid white;
 }
+.chart-section .picto {
+  width: 40px;
+  height: 40px;
+  margin-left: -20px;
+  margin-top: -20px;
+  border-radius: 50%;
+  color: white;
+  background-color: #95d0a7;
+}
+.picto img {
+  width: 60%;
+  height: 40%;
+  margin-top: 30%;
+  margin-left: 20%;
+  filter: invert(100%);
+}
+#chart {
+  margin-top: -30px;
+}
 
 #chart rect.bordered {
-  stroke: black;
-  stroke-width: 2px;
+  /**/
 }
 
 #chart text.mono {
   font-size: 9pt;
-  fill: #aaa;
+  fill: white;
 }
 
 #chart text.axis-workweek {
-  fill: red;
+  fill: white;
 }
 
 #chart text.axis-worktime {
-  fill: red;
+  fill: white;
 }
