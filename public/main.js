@@ -49,15 +49,18 @@ $(function() {
   ];
 
   function heatmapChart(data) {
+    var chartDiv = document.getElementById("chart");
+
     var margin = { top: 50, right: 0, bottom: 100, left: 30 };
     var containerWidth = 960;
     var containerHeight = 430;
     var width = containerWidth - margin.left - margin.right;
-    var height = containerHeight - margin.top - margin.bottom;
-    var gridSize = Math.floor(width / 24);
+    var height = containerHeight - margin.bottom;
 
-    var svg = d3
-      .select("#chart")
+    var cellSize = Math.floor(width / 24);
+
+    svg = d3
+      .select(chartDiv)
       .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
@@ -74,10 +77,10 @@ $(function() {
       })
       .attr("x", 0)
       .attr("y", function(d, i) {
-        return i * gridSize;
+        return i * cellSize;
       })
       .style("text-anchor", "end")
-      .attr("transform", "translate(-6," + gridSize / 1.5 + ")")
+      .attr("transform", "translate(-6," + cellSize / 1.5 + ")")
       .attr("class", function(d, i) {
         return i >= 0 && i <= 4
           ? "dayLabel mono axis axis-workweek"
@@ -93,11 +96,11 @@ $(function() {
         return d;
       })
       .attr("x", function(d, i) {
-        return i * gridSize;
+        return i * cellSize;
       })
       .attr("y", 0)
       .style("text-anchor", "middle")
-      .attr("transform", "translate(" + gridSize / 2 + ", -6)")
+      .attr("transform", "translate(" + cellSize / 2 + ", -6)")
       .attr("class", function(d, i) {
         return i >= 7 && i <= 16
           ? "timeLabel mono axis axis-worktime"
@@ -125,16 +128,16 @@ $(function() {
       .enter()
       .append("rect")
       .attr("x", function(d) {
-        return (d.hour - 1) * gridSize;
+        return (d.hour - 1) * cellSize;
       })
       .attr("y", function(d) {
-        return (d.day - 1) * gridSize;
+        return (d.day - 1) * cellSize;
       })
       .attr("rx", 4)
       .attr("ry", 4)
       .attr("class", "hour bordered")
-      .attr("width", gridSize)
-      .attr("height", gridSize)
+      .attr("width", cellSize)
+      .attr("height", cellSize)
       .style("fill", colors[0]);
 
     cards
@@ -150,11 +153,11 @@ $(function() {
 
     cards.exit().remove();
 
-    buildLegend(svg, colorScale, gridSize, height);
+    buildLegend(svg, colorScale, cellSize, height);
   }
 
-  function buildLegend(svg, colorScale, gridSize, height) {
-    var legendElementWidth = gridSize * 2;
+  function buildLegend(svg, colorScale, cellSize, height) {
+    var legendElementWidth = cellSize * 2;
 
     var legend = svg
       .selectAll(".legend")
@@ -174,7 +177,7 @@ $(function() {
       })
       .attr("y", height)
       .attr("width", legendElementWidth)
-      .attr("height", gridSize / 2)
+      .attr("height", cellSize / 2)
       .style("fill", function(d, i) {
         return colors[i];
       });
@@ -188,7 +191,7 @@ $(function() {
       .attr("x", function(d, i) {
         return legendElementWidth * i;
       })
-      .attr("y", height + gridSize);
+      .attr("y", height + cellSize);
 
     legend.exit().remove();
   }

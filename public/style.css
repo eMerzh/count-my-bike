@@ -2,7 +2,8 @@ body {
   font-family: Helvetica Neue, Helvetica, Ubuntu, Roboto, Noto, Segoe UI, Arial,
     sans-serif;
 
-  background-image: url("rikki-chan-122572.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+    url("rikki-chan-122572.jpg");
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -67,19 +68,13 @@ h1 {
   padding: 3px;
 }
 .chart-section {
-  background-color: black;
   opacity: 0.8;
   border-radius: 5px;
   margin-top: 25vw;
   margin-left: 37%;
   margin-right: 5%;
-  height: 20vw;
-  min-height: 200px;
-}
-
-#chart {
-  width: 100%;
-  height: 100%;
+  min-width: 550px;
+  border: 1px solid white;
 }
 
 #chart rect.bordered {
