@@ -31,13 +31,13 @@ $(function() {
       plotOptions: {
         series: {
           borderWidth: 0,
-          color: "#edc330"
+          color: "#95d0a7"
         }
       },
       series: [
         {
           type: "column",
-          name: "Cycles",
+          name: "Bike",
           data: serie_data
         }
       ]

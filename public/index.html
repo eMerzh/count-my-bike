@@ -16,25 +16,30 @@
 <body>
     <header>
         <h1>
-            count
+            Count
             <br> my
             <br>Bike
         </h1>
     </header>
 
-    <section class="counter day-counter">
-        <span class="nbr">-</span>
-        <span class="trend">+12%</span>
-        <span class="label">Last 24h</span>
-    </section>
-    <section class="counter hour-counter">
-        <span class="nbr">-</span>
-        <span class="trend">-15%</span>
-        <span class="label">Last hour</span>
-    </section>
+    <div class="counters">
+        <section class="counter day-counter">
+            <span class="nbr">-</span>
+            <span class="label">Today</span>
+            <span class="trend" title="Between last 24h and last 48h">+12%</span>
+        </section>
+        <section class="counter hour-counter">
+            <span class="nbr">-</span>
+            <span class="label">This hour</span>
+            <span class="trend" title="between last 60min and last 120min">-15%</span>
+        </section>
+    </div>
 
-    <section id="chart">
-        WAW
+    <section class="chart-section">
+        <div class="picto">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Sinnbild_Radfahrer%2C_StVO_1992.svg">
+        </div>
+        <div id="chart"></div>
     </section>
 </body>
 
