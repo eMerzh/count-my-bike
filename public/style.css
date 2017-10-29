@@ -2,7 +2,8 @@ body {
   font-family: Helvetica Neue, Helvetica, Ubuntu, Roboto, Noto, Segoe UI, Arial,
     sans-serif;
 
-  background-image: url("rikki-chan-122572.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+    url("rikki-chan-122572.jpg");
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;

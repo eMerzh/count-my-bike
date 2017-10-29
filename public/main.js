@@ -1,6 +1,7 @@
 $(function() {
   $.get("data.json", function(data) {
-    initChart(data.ts);
+    var chartData = prepareData(data.ts);
+    initChart(chartData);
 
     $(".day-counter .nbr").text(data.day.counter);
     $(".day-counter .trend").text(data.day.trend + "%");
@@ -8,11 +9,74 @@ $(function() {
     $(".hour-counter .trend").text(data.hour.trend + "%");
   });
 
+  function getTruncatedStr(date) {
+    return date.getYear() + "-" + date.getMonth() + "-" + date.getDate();
+  }
+
+  function prepareData(serie_data) {
+    var heatData = [];
+    var drilldowns = {};
+    serie_data.map(function(item) {
+      var itemDateTime = new Date(item[0]);
+      // var itemDay = itemDateTime.getDay();
+      // var itemHour = itemDateTime.getHours();
+      var truncatedDateTime = new Date(
+        itemDateTime.getFullYear(),
+        itemDateTime.getMonth(),
+        itemDateTime.getDate()
+        // itemDateTime.getHours()
+      );
+      var itemValue = item[1];
+      var itemsDayAndHour = heatData.find(function(x) {
+        return x.date.getTime() == truncatedDateTime.getTime();
+      });
+      if (itemsDayAndHour) {
+        itemsDayAndHour.value += itemValue;
+        drilldowns[getTruncatedStr(itemDateTime)] =
+          drilldowns[getTruncatedStr(itemDateTime)] || [];
+        drilldowns[getTruncatedStr(itemDateTime)].push({
+          x: itemDateTime,
+          y: itemValue
+        });
+        return;
+      }
+      heatData.push({ date: truncatedDateTime, value: itemValue });
+    });
+    heatData = heatData.map(function(item) {
+      return {
+        x: item.date,
+        name: getTruncatedStr(item.date),
+        y: item.value,
+        drilldown: getTruncatedStr(item.date)
+      };
+    });
+
+    var drilldowns_series = [];
+    for (var key in drilldowns) {
+      drilldowns_series.push({
+        name: key,
+        id: key,
+        data: drilldowns[key]
+      });
+    }
+    return {
+      main: heatData,
+      drilldowns: drilldowns_series
+    };
+  }
+
   function initChart(serie_data) {
+    Highcharts.setOptions({
+      global: {
+        useUTC: false
+      }
+    });
+
     Highcharts.chart("chart", {
       chart: {
-        zoomType: "x",
-        backgroundColor: ""
+        // zoomType: "x",
+        backgroundColor: "",
+        type: "column"
       },
       title: null,
       credits: false,
@@ -30,17 +94,20 @@ $(function() {
       },
       plotOptions: {
         series: {
-          borderWidth: 0,
+          // borderWidth: 0,
+          borderColor: "#a7e1b9",
           color: "#95d0a7"
         }
       },
       series: [
         {
-          type: "column",
-          name: "Bike",
-          data: serie_data
+          name: "Bikes Per Day",
+          data: serie_data["main"]
         }
-      ]
+      ],
+      drilldown: {
+        series: serie_data["drilldowns"]
+      }
     });
   }
 });
