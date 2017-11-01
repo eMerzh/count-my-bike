@@ -10,11 +10,14 @@ from StringIO import StringIO
 import requests
 from dotenv import find_dotenv, load_dotenv
 from peewee import *
+from weatherbit.api import Api
 
 load_dotenv(find_dotenv())
 
 db = MySQLDatabase(os.environ.get("DB_NAME"), user=os.environ.get("DB_USER"),
                    host=os.environ.get("DB_HOST"), password=os.environ.get("DB_PASS"), charset='utf8mb4')
+
+weather_api = Api(os.environ.get('WEATHER_API_KEY'))
 
 API_URL = 'http://data-mobility.brussels/geoserver/bm_bike/wfs?service=wfs&version=1.1.0&request=GetFeature&typeName=bm_bike:rt_counting&outputFormat=csv'
 dirpath = os.path.dirname(__file__)
@@ -60,6 +63,10 @@ class BikeCounter(Model):
 
     cnt_date = DateTimeField()
 
+    # Meteo Fields
+    precipitation = FloatField()  # in mm , last 3h
+    temperature = FloatField()  # in c°
+
     created_date = DateTimeField(default=datetime.now, index=True)
     last_seen_date = DateTimeField(default=datetime.now)
 
@@ -70,7 +77,7 @@ def fetch():
     BikeCounter.create_table(fail_silently=True)
 
     response = requests.get(API_URL)
-
+    w_response = weather_api.get_current(city="Brussels", country="Belgium")
     f = StringIO(response.text.encode('utf8'))
     reader = csv.DictReader(f, delimiter=',')
     for row in reader:
@@ -95,7 +102,12 @@ def fetch():
                 last_counter.save()
                 continue
 
-        item = BikeCounter.create(year_cnt_delta=delta, **row)
+        item = BikeCounter.create(
+            year_cnt_delta=delta,
+            precipitation=w_response.points[-1].precip3h,
+            temperature=w_response.points[-1].temp,
+            **row
+        )
 
         item.save()
 
