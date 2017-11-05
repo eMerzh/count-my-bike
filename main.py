@@ -104,7 +104,7 @@ def fetch():
 
         item = BikeCounter.create(
             year_cnt_delta=delta,
-            precipitation=w_response.points[-1].precip3h,
+            precipitation=w_response.points[-1].precip,
             temperature=w_response.points[-1].temp,
             **row
         )
