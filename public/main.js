@@ -10,7 +10,9 @@ $(function() {
   });
 
   function getTruncatedStr(date) {
-    return date.getYear() + "-" + date.getMonth() + "-" + date.getDate();
+    return (
+      date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+    );
   }
 
   function prepareData(serie_data) {
@@ -72,6 +74,7 @@ $(function() {
       }
     });
 
+    console.log("main", serie_data);
     Highcharts.chart("chart", {
       chart: {
         // zoomType: "x",
