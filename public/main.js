@@ -58,7 +58,8 @@ $(function() {
       drilldowns_series.push({
         name: key,
         id: key,
-        data: drilldowns[key]
+        data: drilldowns[key],
+        type: "spline"
       });
     }
     return {
@@ -78,8 +79,7 @@ $(function() {
     Highcharts.chart("chart", {
       chart: {
         // zoomType: "x",
-        backgroundColor: "",
-        type: "column"
+        backgroundColor: ""
       },
       title: null,
       credits: false,
@@ -105,6 +105,7 @@ $(function() {
       series: [
         {
           name: "Bikes Per Day",
+          type: "column",
           data: serie_data["main"]
         }
       ],
