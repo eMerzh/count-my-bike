@@ -1,0 +1,9 @@
+body {
+    @extend .font-serif;
+    color: $black;
+}
+.inner {
+    padding: 0 20px;
+    max-width: 1140px;
+    margin: 0 auto;
+}
