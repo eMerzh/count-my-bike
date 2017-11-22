@@ -7,3 +7,43 @@ body {
     max-width: 1140px;
     margin: 0 auto;
 }
+
+section {
+    padding: 60px 0;
+}
+
+// font styles
+h1 {
+    @extend .font-sans;
+    text-transform: uppercase;
+    @include font-size(22px);
+    letter-spacing: 2px;
+    text-align: center;
+}
+h2 {
+    @extend .font-sans;
+    text-transform: uppercase;
+    @include font-size(16px);
+    letter-spacing: 2px;
+    padding-left: 15px;
+    position: relative;
+    margin-bottom: 20px;
+    &:before {
+        @extend .pseudo-element;
+        width: 8px;
+        height: 8px;
+        background: $main-color;
+        position: absolute;
+        left: 0;
+        top: 3px;
+    }
+}
+p {
+    @include font-size(12px);
+    @include line-height(21px);
+    &.intro {
+        @include font-size(16px);
+        @include line-height(24px);
+    }
+}
+// font styles
