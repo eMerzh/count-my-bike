@@ -56,6 +56,9 @@ $(function() {
 
     var drilldowns_series = [];
     for (var key in drilldowns) {
+      drilldowns[key].sort(function(a, b) {
+        return a.x - b.x;
+      });
       drilldowns_series.push({
         name: key,
         id: key,
@@ -78,16 +81,6 @@ $(function() {
     detailChart([]);
 
     Highcharts.chart("chart01", {
-      chart: {
-        events: {
-          drilldown: function(e) {
-            var newData = jQuery.extend(true, {}, e.seriesOptions.data);
-
-            detailChart(e.seriesOptions);
-            return false;
-          }
-        }
-      },
       title: null,
       credits: false,
       xAxis: {
@@ -106,15 +99,29 @@ $(function() {
       },
       plotOptions: {
         series: {
-          // borderWidth: 0,
-          // borderColor: "#a7e1b9",
           color: "#E4E4E4",
-
+          point: {
+            events: {
+              select: function() {
+                var pointName = this.name;
+                var data = serie_data["drilldowns"].filter(function(value) {
+                  return value.name == pointName;
+                });
+                var endDate = new Date(this.x);
+                endDate.setDate(endDate.getDate() + 1);
+                detailChart(data, this.x.getTime(), endDate.getTime());
+              }
+            }
+          },
           states: {
             hover: {
               color: "#E5B363"
+            },
+            select: {
+              color: "#E5B363"
             }
-          }
+          },
+          allowPointSelect: true
         }
       },
       series: [
@@ -123,14 +130,11 @@ $(function() {
           type: "column",
           data: serie_data["main"]
         }
-      ],
-      drilldown: {
-        series: serie_data["drilldowns"]
-      }
+      ]
     });
   }
 
-  function detailChart(series) {
+  function detailChart(series, min, max) {
     Highcharts.chart("chart02", {
       chart: {
         type: "area"
@@ -139,7 +143,9 @@ $(function() {
       credits: false,
       xAxis: {
         type: "datetime",
-        lineColor: "#F3F3F3"
+        lineColor: "#F3F3F3",
+        softMin: min,
+        softMax: max
       },
       yAxis: {
         visible: false,
@@ -150,7 +156,7 @@ $(function() {
       legend: {
         enabled: false
       },
-      series: [series],
+      series: series,
       plotOptions: {
         series: {
           color: "#E4E4E4"
