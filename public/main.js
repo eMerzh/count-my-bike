@@ -75,16 +75,25 @@ $(function() {
         useUTC: false
       }
     });
+    detailChart([]);
 
     Highcharts.chart("chart01", {
       chart: {
-        // zoomType: "x",
-        backgroundColor: ""
+        events: {
+          drilldown: function(e) {
+            var newData = jQuery.extend(true, {}, e.seriesOptions.data);
+
+            detailChart(e.seriesOptions);
+            return false;
+          }
+        }
       },
       title: null,
       credits: false,
       xAxis: {
-        type: "datetime"
+        type: "datetime",
+        lineColor: "#F3F3F3"
+        // lineWidth: 0
       },
       yAxis: {
         visible: false,
@@ -117,6 +126,35 @@ $(function() {
       ],
       drilldown: {
         series: serie_data["drilldowns"]
+      }
+    });
+  }
+
+  function detailChart(series) {
+    Highcharts.chart("chart02", {
+      chart: {
+        type: "area"
+      },
+      title: null,
+      credits: false,
+      xAxis: {
+        type: "datetime",
+        lineColor: "#F3F3F3"
+      },
+      yAxis: {
+        visible: false,
+        title: {
+          text: "Cyle Count"
+        }
+      },
+      legend: {
+        enabled: false
+      },
+      series: [series],
+      plotOptions: {
+        series: {
+          color: "#E4E4E4"
+        }
       }
     });
   }
