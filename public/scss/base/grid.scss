@@ -1,0 +1,10 @@
+.container {
+    display: grid;
+    max-width: 1140px;
+    grid-template-columns: repeat(5, 1fr);
+    // grid-template-rows: repeat(2, 150px);
+    grid-template-rows: auto;
+    grid-auto-rows: auto;
+    grid-gap: 20px;
+    margin: 0 auto;
+}

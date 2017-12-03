@@ -1,0 +1,24 @@
+// TRANSFORM PIXEL TO REM
+@function calculateRem($size) {
+    $remSize: $size / 16px;
+    @return $remSize * 1rem;
+}
+
+
+// FONT-SIZE @include font-size(16px);
+@mixin font-size($size) {
+    font-size: $size;
+    font-size: calculateRem($size);
+}
+
+
+// LINE-HEIGHT @include line-height(16px);
+@mixin line-height($size) {
+    line-height: $size;
+    line-height: calculateRem($size);
+}
+
+.pseudo-element {
+    display: inline-block;
+    content: "";
+}

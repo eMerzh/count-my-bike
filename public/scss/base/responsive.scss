@@ -1,0 +1,50 @@
+// 1760px
+@mixin bp-xxxlarge {
+    @media screen and (min-width: 110em) {
+        @content;
+    }
+}
+// 1600px
+@mixin bp-xxlarge {
+    @media screen and (min-width: 100em) {
+        @content;
+    }
+}
+// 1440px
+@mixin bp-xlarge {
+    @media screen and (min-width: 90em) {
+        @content;
+    }
+}
+
+// 1280px
+@mixin bp-large {
+    @media screen and (min-width: 80em) {
+        @content;
+    }
+}
+
+// 1200px
+@mixin bp-laptop {
+    @media screen and (min-width: 75em) {
+        @content;
+    }
+}
+// 960px
+@mixin bp-desktop {
+    @media screen and (min-width: 60em) {
+        @content;
+    }
+}
+// 640px
+@mixin bp-medium {
+    @media screen and (min-width: 40em) {
+        @content;
+    }
+}
+// 480px
+@mixin bp-small {
+    @media screen and (min-width: 30em) {
+        @content;
+    }
+}
