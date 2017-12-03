@@ -121,9 +121,9 @@ def fetch_count(start, end):
 
 def export():
     """ Export all pumped data to file """
-    data = {'ts': [], 'hour': {}, 'day': {}}
+    data = {'ts': [], 'hour': {}, 'day': {}, 'week': {}, 'month': {}}
     query = BikeCounter.select(fn.Unix_Timestamp(BikeCounter.created_date).alias('tick'), BikeCounter.year_cnt_delta)
-
+    today = datetime.now()
     # Put im Time Serie
     for row in query:
         data['ts'].append([row.tick * 1000, row.year_cnt_delta])
@@ -139,6 +139,7 @@ def export():
     else:
         trend = ((new_counter - old_counter) / old_counter) * 100
     data['hour']['trend'] = int(trend)
+
     data['day']['counter'] = BikeCounter.select(
         BikeCounter.day_cnt).order_by(BikeCounter.created_date.desc()).scalar()
     old_counter = fetch_count(datetime.now() - timedelta(days=2), datetime.now() - timedelta(days=1))
@@ -149,6 +150,11 @@ def export():
         trend = ((new_counter - old_counter) / old_counter) * 100
     data['day']['trend'] = int(trend)
 
+    start_of_week = (today - timedelta(days=today.weekday())).date()
+    start_of_month = (today - timedelta(days=today.weekday())).date()
+
+    data['week']['counter'] = int(fetch_count(start_of_week, datetime.now()))
+    data['month']['counter'] = int(fetch_count(start_of_month, datetime.now()))
     # Dump it to disk
     with open(EXPORT_PATH, 'w') as outfile:
         json.dump(data, outfile)
