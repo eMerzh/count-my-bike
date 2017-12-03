@@ -4,9 +4,9 @@ $(function() {
     initChart(chartData);
 
     $(".day-counter .nbr").text(data.day.counter);
-    $(".day-counter .trend").text(data.day.trend + "%");
-    $(".hour-counter .nbr").text(data.hour.counter);
-    $(".hour-counter .trend").text(data.hour.trend + "%");
+    // $(".day-counter .trend").text(data.day.trend + "%");
+    $(".week-counter .nbr").text(data.hour.counter);
+    // $(".hour-counter .trend").text(data.hour.trend + "%");
   });
 
   function getTruncatedStr(date) {
@@ -75,8 +75,7 @@ $(function() {
       }
     });
 
-    console.log("main", serie_data);
-    Highcharts.chart("chart", {
+    Highcharts.chart("chart01", {
       chart: {
         // zoomType: "x",
         backgroundColor: ""
@@ -98,8 +97,8 @@ $(function() {
       plotOptions: {
         series: {
           // borderWidth: 0,
-          borderColor: "#a7e1b9",
-          color: "#95d0a7"
+          // borderColor: "#a7e1b9",
+          color: "#CACACA"
         }
       },
       series: [

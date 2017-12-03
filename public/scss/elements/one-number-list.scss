@@ -1,16 +1,16 @@
 .one-number-list {
-    margin-top: 20px;
-    li {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        strong {
-            @include font-size(47px);
-            flex: 0 0 auto;
-            width: 100px;
-        }
-        &+li {
-            margin-top: 20px;
-        }
+  margin-top: 20px;
+  li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    strong {
+      @include font-size(47px);
+      flex: 0 0 auto;
+      width: 100px;
     }
+    & + li {
+      margin-top: 20px;
+    }
+  }
 }
