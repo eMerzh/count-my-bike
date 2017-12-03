@@ -5,7 +5,8 @@ $(function() {
 
     $(".day-counter .nbr").text(data.day.counter);
     // $(".day-counter .trend").text(data.day.trend + "%");
-    $(".week-counter .nbr").text(data.hour.counter);
+    $(".week-counter .nbr").text(data.week.counter);
+    $(".month-counter .nbr").text(data.month.counter);
     // $(".hour-counter .trend").text(data.hour.trend + "%");
   });
 
@@ -98,7 +99,13 @@ $(function() {
         series: {
           // borderWidth: 0,
           // borderColor: "#a7e1b9",
-          color: "#CACACA"
+          color: "#E4E4E4",
+
+          states: {
+            hover: {
+              color: "#E5B363"
+            }
+          }
         }
       },
       series: [

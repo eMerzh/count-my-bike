@@ -208,7 +208,7 @@ p {
 header {
   position: relative;
   padding: 60px 0;
-  background-image: linear-gradient(-170deg, #FFFFFF 0%, #F0F0F0 100%); }
+  background-image: linear-gradient(-170deg, #ffffff 0%, #f0f0f0 100%); }
   header:before {
     position: absolute;
     top: 0;
@@ -217,7 +217,7 @@ header {
     right: 0;
     background: url("../img/header-bg.jpg");
     background-size: cover;
-    opacity: .2; }
+    opacity: 0.2; }
   header:after {
     position: absolute;
     bottom: 0;
@@ -229,7 +229,7 @@ header {
     position: relative; }
     header .container:after {
       display: inline-block;
-      content: '';
+      content: "";
       width: 300px;
       height: 220px;
       background: url("../img/header-bike.png");
@@ -247,7 +247,7 @@ header {
           position: relative; }
         header .container h1 span:before {
           display: inline-block;
-          content: '';
+          content: "";
           position: absolute;
           width: 100%;
           height: 8px;
@@ -276,7 +276,7 @@ header {
         margin-left: 60px; }
         header .container .stats-list li + li:before {
           display: inline-block;
-          content: '';
+          content: "";
           height: 100%;
           width: 1px;
           background: #BBBBBB;
@@ -308,8 +308,7 @@ header {
   grid-column: 4 / 6; }
 
 .chart-area {
-  height: 150px;
-  opacity: 0.5; }
+  height: 150px; }
 
 .one-number-list {
   margin-top: 20px; }
