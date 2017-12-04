@@ -310,6 +310,24 @@ header {
 .chart-area {
   height: 150px; }
 
+.chart-prev-next {
+  display: flex;
+  justify-content: space-between; }
+  .chart-prev-next .btn-action {
+    background-color: #f1f1f1;
+    color: black;
+    border-radius: 50%;
+    border: 0;
+    display: inline-block;
+    width: 3em;
+    height: 3em;
+    margin-top: calc(75px - 1.5em); }
+    .chart-prev-next .btn-action:hover {
+      background-color: #bdbdbd; }
+  .chart-prev-next .no-data {
+    align-self: flex-end;
+    color: lightgray; }
+
 .one-number-list {
   margin-top: 20px; }
   .one-number-list li {

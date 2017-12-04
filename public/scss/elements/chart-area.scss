@@ -3,3 +3,27 @@
   height: 150px;
   //   opacity: 0.5;
 }
+
+.chart-prev-next {
+  display: flex;
+  justify-content: space-between;
+
+  .btn-action {
+    background-color: #f1f1f1;
+    color: black;
+    border-radius: 50%;
+    border: 0;
+    display: inline-block;
+    width: 3em;
+    height: 3em;
+    margin-top: calc(75px - 1.5em);
+    &:hover {
+      background-color: #bdbdbd;
+    }
+  }
+
+  .no-data {
+    align-self: flex-end;
+    color: lightgray;
+  }
+}
