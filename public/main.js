@@ -4,7 +4,7 @@ $(function() {
     initChart(chartData);
 
     $(".day-counter .nbr").text(data.day.counter);
-    // $(".day-counter .trend").text(data.day.trend + "%");
+    $(".trends-day").text(data.day.trend + "%");
     $(".week-counter .nbr").text(data.week.counter);
     $(".month-counter .nbr").text(data.month.counter);
     // $(".hour-counter .trend").text(data.hour.trend + "%");
@@ -88,6 +88,11 @@ $(function() {
         lineColor: "#F3F3F3"
         // lineWidth: 0
       },
+      tooltip: {
+        headerFormat: null,
+        pointFormat:
+          "<b>{point.y}</b> bikes <br /> on the <b>{point.x:%d-%m-%Y}</b>"
+      },
       yAxis: {
         visible: false,
         title: {
@@ -147,6 +152,11 @@ $(function() {
         softMin: min,
         softMax: max
       },
+      tooltip: {
+        headerFormat: null,
+        pointFormat:
+          "<b>{point.y}</b> bikes <br /> on the <b>{point.x:%d-%m-%Y}</b>"
+      },
       yAxis: {
         visible: false,
         title: {
@@ -159,6 +169,7 @@ $(function() {
       series: series,
       plotOptions: {
         series: {
+          animation: false,
           color: "#E4E4E4"
         }
       }
