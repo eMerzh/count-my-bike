@@ -11,6 +11,9 @@ $(function() {
   });
 
   function getTruncatedStr(date) {
+    if (!date) {
+      return "";
+    }
     return (
       date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
     );
@@ -78,7 +81,6 @@ $(function() {
         useUTC: false
       }
     });
-    detailChart([]);
 
     Highcharts.chart("chart01", {
       title: null,
@@ -140,6 +142,8 @@ $(function() {
   }
 
   function detailChart(series, min, max) {
+    $(".chart-02 h2").text("Details of " + getTruncatedStr(new Date(min)));
+
     Highcharts.chart("chart02", {
       chart: {
         type: "area"
