@@ -1,4 +1,6 @@
 $(function() {
+  var detailDate;
+  var serieData;
   $.get("data.json", function(data) {
     var chartData = prepareData(data.ts);
     initChart(chartData);
@@ -76,6 +78,7 @@ $(function() {
   }
 
   function initChart(serie_data) {
+    serieData = serie_data;
     Highcharts.setOptions({
       global: {
         useUTC: false
@@ -111,7 +114,7 @@ $(function() {
             events: {
               select: function() {
                 var pointName = this.name;
-                var data = serie_data["drilldowns"].filter(function(value) {
+                var data = serieData["drilldowns"].filter(function(value) {
                   return value.name == pointName;
                 });
                 var endDate = new Date(this.x);
@@ -139,10 +142,69 @@ $(function() {
         }
       ]
     });
+
+    $(".btn-detail-prev").on("click", setPreviousDetails);
+    $(".btn-detail-next").on("click", setNextDetails);
+  }
+
+  function setPreviousDetails() {
+    detailDate.setDate(detailDate.getDate() - 1);
+    var endDate = new Date(detailDate.getTime());
+    endDate.setDate(endDate.getDate() + 1);
+    var pointName = getTruncatedStr(detailDate);
+    var data = serieData["drilldowns"].filter(function(value) {
+      return value.name == pointName;
+    });
+
+    var refDate = getTruncatedStr(detailDate);
+    // Make sure to select day
+    var daily_row = $("#chart01")
+      .highcharts()
+      .series[0].data.filter(function(a) {
+        return a.name == refDate;
+      });
+    if (daily_row[0] && !daily_row[0].selected) {
+      daily_row[0].select();
+    }
+    detailChart(data, detailDate.getTime(), endDate.getTime());
+  }
+
+  function setNextDetails() {
+    detailDate.setDate(detailDate.getDate() + 1);
+    var endDate = new Date(detailDate.getTime());
+    endDate.setDate(endDate.getDate() + 1);
+    var pointName = getTruncatedStr(detailDate);
+    var data = serieData["drilldowns"].filter(function(value) {
+      return value.name == pointName;
+    });
+
+    var refDate = getTruncatedStr(detailDate);
+    // Make sure to select day
+    var daily_row = $("#chart01")
+      .highcharts()
+      .series[0].data.filter(function(a) {
+        return a.name == refDate;
+      });
+    if (daily_row[0] && !daily_row[0].selected) {
+      daily_row[0].select();
+    }
+
+    detailChart(data, detailDate.getTime(), endDate.getTime());
   }
 
   function detailChart(series, min, max) {
-    $(".chart-02 h2").text("Details of " + getTruncatedStr(new Date(min)));
+    detailDate = new Date(min);
+    var refDate = getTruncatedStr(detailDate);
+    $(".chart-02 .btn-action").show();
+    $(".chart-02 h2").text("Details of " + refDate);
+    if (series.length === 0) {
+      $("#chart02").hide();
+      $(".chart-02 .no-data").show();
+      return;
+    }
+
+    $("#chart02").show();
+    $(".chart-02 .no-data").hide();
 
     Highcharts.chart("chart02", {
       chart: {
