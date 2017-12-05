@@ -220,8 +220,7 @@ $(function() {
       },
       tooltip: {
         headerFormat: null,
-        pointFormat:
-          "<b>{point.y}</b> bikes <br /> on the <b>{point.x:%d-%m-%Y}</b>"
+        pointFormat: "<b>{point.y}</b> bikes at <b>{point.x:%H:%M}</b>"
       },
       yAxis: {
         visible: false,
