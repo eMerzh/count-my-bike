@@ -1,29 +1,39 @@
 .chart-area {
-  //background: $gray-1;
-  height: 150px;
-  //   opacity: 0.5;
+    //background: $gray-1;
+    height: 150px;
+    //   opacity: 0.5;
+}
+#year-chart {
+    grid-row: 1;
+    margin-top: 50px;
+    grid-column: 3/8;
+    height: 400px;
+}
+.year-facts {
+    grid-row: 1;
+    grid-column: 8/9;
 }
 
 .chart-prev-next {
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 
-  .btn-action {
-    background-color: #f1f1f1;
-    color: black;
-    border-radius: 50%;
-    border: 0;
-    display: inline-block;
-    width: 3em;
-    height: 3em;
-    margin-top: calc(75px - 1.5em);
-    &:hover {
-      background-color: #bdbdbd;
+    .btn-action {
+        background-color: #f1f1f1;
+        color: black;
+        border-radius: 50%;
+        border: 0;
+        display: inline-block;
+        width: 3em;
+        height: 3em;
+        margin-top: calc(75px - 1.5em);
+        &:hover {
+            background-color: #bdbdbd;
+        }
     }
-  }
 
-  .no-data {
-    align-self: flex-end;
-    color: lightgray;
-  }
+    .no-data {
+        align-self: flex-end;
+        color: lightgray;
+    }
 }

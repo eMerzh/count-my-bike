@@ -310,6 +310,16 @@ header {
 .chart-area {
   height: 150px; }
 
+#year-chart {
+  grid-row: 1;
+  margin-top: 50px;
+  grid-column: 3/8;
+  height: 400px; }
+
+.year-facts {
+  grid-row: 1;
+  grid-column: 8/9; }
+
 .chart-prev-next {
   display: flex;
   justify-content: space-between; }
