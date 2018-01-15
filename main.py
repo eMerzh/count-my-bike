@@ -20,12 +20,14 @@ db = MySQLDatabase(os.environ.get("DB_NAME"), user=os.environ.get("DB_USER"),
 weather_api = Api(os.environ.get('WEATHER_API_KEY'))
 
 API_URL = 'http://data-mobility.brussels/geoserver/bm_bike/wfs?service=wfs&version=1.1.0&request=GetFeature&typeName=bm_bike:rt_counting&outputFormat=csv'
-dirpath = os.path.dirname(__file__)
-EXPORT_PATH = os.path.join(dirpath, 'public/data.json')
+EXPORT_PATH = os.path.join(os.path.dirname(__file__), 'public/data.json')
+API_TIMEOUT = os.environ.get("API_TIMEOUT", 30)
 
 
 class BikeCounter(Model):
+    """ Contain the counting data, almost mimic the api fields """
     class Meta:
+        """ Meta class for peewee db """
         database = db
 
     gid = IntegerField()
@@ -76,7 +78,7 @@ def fetch():
     db.connect()
     BikeCounter.create_table(fail_silently=True)
 
-    response = requests.get(API_URL)
+    response = requests.get(API_URL, timeout=API_TIMEOUT)
     w_response = weather_api.get_current(city="Brussels", country="Belgium")
     f = StringIO(response.text.encode('utf8'))
     reader = csv.DictReader(f, delimiter=',')

@@ -1,5 +1,18 @@
 .section-interactive-chart {
-  background: url("../img/interactive-chart-bg.jpg") bottom left;
-  background-size: cover;
-  height: 500px;
+    background: url("../img/interactive-chart-bg.jpg") bottom left;
+    background-size: cover;
+    height: 500px;
+}
+
+.section-interactive-chart footer {
+    text-align: center;
+    margin-top: 60px;
+    .githubico {
+        fill: lightgray;
+    }
+
+    a[href] {
+        color: lightgray;
+        text-decoration: none;
+    }
 }

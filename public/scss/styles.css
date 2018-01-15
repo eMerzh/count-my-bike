@@ -356,3 +356,14 @@ header {
   background: url("../img/interactive-chart-bg.jpg") bottom left;
   background-size: cover;
   height: 500px; }
+
+.section-interactive-chart footer {
+  text-align: center;
+  margin-top: 60px; }
+  .section-interactive-chart footer .githubico {
+    fill: lightgray; }
+  .section-interactive-chart footer a[href] {
+    color: lightgray;
+    text-decoration: none; }
+
+/*# sourceMappingURL=styles.css.map */
