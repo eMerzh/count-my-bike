@@ -35,6 +35,18 @@ then a run (probably with a cron)
 
 you can then serve the "public" folder with any web server :)
 
+## Quick Todo:
+- [ ] Remove Lorem ipsum 
+- [ ] Add Smart city web link
+- [ ] Sentry 
+- [ ] Google Analytics
+- [ ] Code cleanup
+- [ ] FallBack when API fails
+- [ ] Refactor :) 
+
+
+
+
 ## Contributors
 
 * Brice Maron
