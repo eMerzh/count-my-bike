@@ -39,8 +39,8 @@ you can then serve the "public" folder with any web server :)
 
 * [ ] Remove Lorem ipsum
 * [ ] Add Smart city + Cyclop links
+* [ ] Ensure Timezone ready-ness
 * [ ] Sentry
-* [ ] Google Analytics
 * [ ] Code cleanup
 * [ ] FallBack when API fails
 * [ ] Refactor :)
