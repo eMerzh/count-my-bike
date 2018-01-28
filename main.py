@@ -10,9 +10,14 @@ from StringIO import StringIO
 import requests
 from dotenv import find_dotenv, load_dotenv
 from peewee import *
+from raven import Client
 from weatherbit.api import Api
 
 load_dotenv(find_dotenv())
+
+
+if os.environ.get('SENTRY_DSN'):
+    sentry = Client(os.environ.get('SENTRY_DSN'))
 
 db = MySQLDatabase(os.environ.get("DB_NAME"), user=os.environ.get("DB_USER"),
                    host=os.environ.get("DB_HOST"), password=os.environ.get("DB_PASS"), charset='utf8mb4')
