@@ -39,10 +39,10 @@ you can then serve the "public" folder with any web server :)
 
 * [ ] Remove Lorem ipsum
 * [ ] Add Smart city + Cyclop links
+* [ ] Responsive
 * [ ] Ensure Timezone ready-ness
-* [ ] Sentry
 * [ ] Code cleanup
-* [ ] FallBack when API fails
+* [ ] FallBack when API fails ( vrai-o-tron, ...)
 * [ ] Refactor :)
 
 ## Contributors
