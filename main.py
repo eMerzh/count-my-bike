@@ -71,8 +71,8 @@ class BikeCounter(Model):
     cnt_date = DateTimeField()
 
     # Meteo Fields
-    precipitation = FloatField()  # in mm , last 3h
-    temperature = FloatField()  # in c°
+    precipitation = FloatField(null=True)  # in mm , last 3h
+    temperature = FloatField(null=True)  # in c°
 
     created_date = DateTimeField(default=datetime.now, index=True)
     last_seen_date = DateTimeField(default=datetime.now)
