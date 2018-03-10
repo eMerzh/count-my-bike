@@ -37,28 +37,20 @@ you can then serve the "public" folder with any web server :)
 
 ## Quick Todo:
 
-* [ ] Remove Lorem ipsum
-* [ ] Add Smart city + Cyclop links
-* [ ] Responsive
-* [ ] Ensure Timezone ready-ness
-* [ ] Code cleanup
-* [ ] FallBack when API fails ( vrai-o-tron, ...)
-* [ ] Refactor :)
+*   [ ] Remove Lorem ipsum
+*   [ ] Add Smart city + Cyclop links
+*   [ ] Responsive
+*   [ ] Ensure Timezone ready-ness
+*   [ ] Code cleanup
+*   [ ] FallBack when API fails ( vrai-o-tron, ...)
+*   [ ] Refactor :)
 
 ## Contributors
 
-* [Brice Maron](https://github.com/eMerzh)
-* [David Thurion](https://github.com/davidthurion)
-* [Grégoire Leeuwerck](https://github.com/leeuwerck)
-* [Alex T.](https://github.com/schokolex)
-
-### With help of
-
-[![Cycloperativa](http://cycloperativa.org/images/cyclop-logo.png)](http://cycloperativa.org/)
-
-and Brussels Smart City
-
-[![Brussels Smart City](http://bric.brussels/en/images/graphs/smart-brussels/smart-en)](https://smartcity.brussels/)
+*   [Brice Maron](https://github.com/eMerzh)
+*   [David Thurion](https://github.com/davidthurion)
+*   [Grégoire Leeuwerck](https://github.com/leeuwerck)
+*   [Alex T.](https://github.com/schokolex)
 
 ## License
 
