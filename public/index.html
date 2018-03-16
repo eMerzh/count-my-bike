@@ -54,18 +54,22 @@
                 <article class="daily-stats chart-01">
                     <h2>Daily stats</h2>
 
-                    <day-to-day-chart class="chart-area" :serie-data="chartData" v-on:select="selectDateDetail"></day-to-day-chart>
+                    <day-to-day-chart class="chart-area" :serie-data="chartData" :selected-day="selectedDay" v-on:select="selectDateDetail"></day-to-day-chart>
 
                 </article>
                 <article class="daily-stats chart-02">
-                    <h2>Details (select a day above)</h2>
+                    <h2>Details
+                        <template v-if="selectedDay"> of {{ selectedDayString }}</template>
+                        <template v-else>(select a day above)</template>
+                    </h2>
                     <div class="chart-prev-next">
-                        <button class="btn-action btn-detail-prev" v-if="selectedDay" v-on:click="selectPrevious">&laquo;</button>
+                        <button class="btn-action btn-detail-prev" v-if="selectedDay" @click="selectPrevious">&laquo;</button>
 
-                        <detail-chart class="chart-area" :serie-data="detailDayData" :selected-day="selectedDay" v-if="detailDayData"></detail-chart>
-                        <div class="no-data" style="display:none">No data for this day ¯\_(ツ)_/¯</div>
-
-                        <button class="btn-action btn-detail-next" v-if="selectedDay" v-on:click="selectNext">&raquo;</button>
+                        <detail-chart class="chart-area" :serie-data="detailDayData" :selected-day="selectedDay" v-if="detailDayData && detailDayData.length > 0"></detail-chart>
+                        <div class="no-data" v-if="! detailDayData || detailDayData.length == 0">
+                            No data for this day ¯\_(ツ)_/¯
+                        </div>
+                        <button class="btn-action btn-detail-next" v-if="selectedDay" @click="selectNext">&raquo;</button>
                     </div>
 
                 </article>
@@ -132,14 +136,14 @@
     </div>
     <script src="main_vue.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113167410-1"></script>
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113167410-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
         gtag('config', 'UA-113167410-1');
-    </script>
+    </script> -->
 </body>
 
 </html>

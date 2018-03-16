@@ -17,6 +17,9 @@ var app = new Vue({
     chartData: function() {
       return this.apiResponse.ts ? prepareData(this.apiResponse.ts) : {};
     },
+    selectedDayString: function() {
+      return getTruncatedStr(this.selectedDay);
+    },
     detailDayData: function() {
       if (!this.selectedDay) return null;
 
@@ -318,11 +321,28 @@ Vue.component("day-to-day-chart", {
     serieData: {
       type: Object,
       required: true
+    },
+    selectedDay: {
+      required: true
     }
   },
   computed: {
     dayChartData: function() {
       var vm = this;
+      if (vm.selectedDay) {
+        // Hightlight selected day in chart
+        var selectDateStr = getTruncatedStr(vm.selectedDay);
+        var dayRow = vm.serieData["main"].filter(function(a) {
+          return a.name == selectDateStr;
+        });
+        vm.serieData["main"].forEach(function(item) {
+          item.selected = false;
+        });
+
+        if (dayRow[0]) {
+          dayRow[0].selected = true;
+        }
+      }
       return {
         title: null,
         credits: false,
@@ -348,6 +368,7 @@ Vue.component("day-to-day-chart", {
         plotOptions: {
           series: {
             color: "#E4E4E4",
+            animation: false, //  for refresh of selected
             point: {
               events: {
                 select: function() {
