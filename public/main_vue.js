@@ -5,76 +5,6 @@ Highcharts.setOptions({
   }
 });
 
-var app = new Vue({
-  el: "#app",
-  data: {
-    apiResponse: { day: {}, week: {}, month: {} },
-    statByDay: {},
-    statByMinute: {},
-    selectedDay: null
-  },
-  computed: {
-    chartData: function() {
-      return this.apiResponse.ts ? prepareData(this.apiResponse.ts) : {};
-    },
-    selectedDayString: function() {
-      return getTruncatedStr(this.selectedDay);
-    },
-    detailDayData: function() {
-      if (!this.selectedDay) return null;
-
-      var dayStr =
-        this.selectedDay.getFullYear() +
-        "-" +
-        (parseInt(this.selectedDay.getMonth()) + 1) +
-        "-" +
-        this.selectedDay.getDate();
-
-      return this.chartData["drilldowns"].filter(function(value) {
-        return value.name == dayStr;
-      });
-    },
-    todayCount: function() {
-      return this.apiResponse.day.counter;
-    },
-    weekCount: function() {
-      return this.apiResponse.week.counter;
-    },
-    monthCount: function() {
-      return this.apiResponse.month.counter;
-    },
-    trendsDay: function() {
-      return this.apiResponse.day.trend;
-    }
-  },
-  methods: {
-    selectDateDetail: function(data) {
-      var parts = data.day.split("-");
-      this.selectedDay = new Date(
-        parseInt(parts[0], 10),
-        parseInt(parts[1], 10) - 1,
-        parseInt(parts[2], 10)
-      );
-    },
-    selectPrevious: function() {
-      var newDate = new Date(this.selectedDay);
-      newDate.setDate(newDate.getDate() - 1);
-      this.selectedDay = newDate;
-    },
-    selectNext: function() {
-      var newDate = new Date(this.selectedDay);
-      newDate.setDate(newDate.getDate() + 1);
-      this.selectedDay = newDate;
-    }
-  },
-  created() {
-    var vm = this;
-    this.$http.get("data.json").then(function(response) {
-      vm.apiResponse = response.data;
-    });
-  }
-});
-
 function getTruncatedStr(date) {
   if (!date) {
     return "";
@@ -138,7 +68,7 @@ function prepareData(serie_data) {
   };
 }
 
-Vue.component("Chart", {
+var Chart = Vue.component("Chart", {
   props: {
     chart: {
       type: Object,
@@ -164,7 +94,7 @@ Vue.component("Chart", {
   }
 });
 
-Vue.component("yearly-chart", {
+var YearlyChar = Vue.component("yearly-chart", {
   data: function() {
     return {
       yearlyInfographicData: [
@@ -316,7 +246,7 @@ Vue.component("yearly-chart", {
   template: '<Chart :chart="cycleData"></Chart>'
 });
 
-Vue.component("day-to-day-chart", {
+var DayToDayChart = Vue.component("day-to-day-chart", {
   props: {
     serieData: {
       type: Object,
@@ -400,7 +330,7 @@ Vue.component("day-to-day-chart", {
   template: '<Chart :chart="dayChartData"></Chart>'
 });
 
-Vue.component("detail-chart", {
+var DetailChart = Vue.component("detail-chart", {
   props: {
     serieData: {
       type: Array,
@@ -454,4 +384,74 @@ Vue.component("detail-chart", {
     }
   },
   template: '<Chart :chart="chartDef"></Chart>'
+});
+
+var app = new Vue({
+  el: "#app",
+  data: {
+    apiResponse: { day: {}, week: {}, month: {} },
+    statByDay: {},
+    statByMinute: {},
+    selectedDay: null
+  },
+  computed: {
+    chartData: function() {
+      return this.apiResponse.ts ? prepareData(this.apiResponse.ts) : {};
+    },
+    selectedDayString: function() {
+      return getTruncatedStr(this.selectedDay);
+    },
+    detailDayData: function() {
+      if (!this.selectedDay) return null;
+
+      var dayStr =
+        this.selectedDay.getFullYear() +
+        "-" +
+        (parseInt(this.selectedDay.getMonth()) + 1) +
+        "-" +
+        this.selectedDay.getDate();
+
+      return this.chartData["drilldowns"].filter(function(value) {
+        return value.name == dayStr;
+      });
+    },
+    todayCount: function() {
+      return this.apiResponse.day.counter;
+    },
+    weekCount: function() {
+      return this.apiResponse.week.counter;
+    },
+    monthCount: function() {
+      return this.apiResponse.month.counter;
+    },
+    trendsDay: function() {
+      return this.apiResponse.day.trend;
+    }
+  },
+  methods: {
+    selectDateDetail: function(data) {
+      var parts = data.day.split("-");
+      this.selectedDay = new Date(
+        parseInt(parts[0], 10),
+        parseInt(parts[1], 10) - 1,
+        parseInt(parts[2], 10)
+      );
+    },
+    selectPrevious: function() {
+      var newDate = new Date(this.selectedDay);
+      newDate.setDate(newDate.getDate() - 1);
+      this.selectedDay = newDate;
+    },
+    selectNext: function() {
+      var newDate = new Date(this.selectedDay);
+      newDate.setDate(newDate.getDate() + 1);
+      this.selectedDay = newDate;
+    }
+  },
+  created() {
+    var vm = this;
+    this.$http.get("data.json").then(function(response) {
+      vm.apiResponse = response.data;
+    });
+  }
 });
