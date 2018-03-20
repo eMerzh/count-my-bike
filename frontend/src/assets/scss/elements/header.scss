@@ -9,7 +9,7 @@ header {
     left: 0;
     bottom: 0;
     right: 0;
-    background: url("../img/header-bg.jpg");
+    background: url("./assets/img/header-bg.jpg");
     background-size: cover;
     opacity: 0.2;
   }
@@ -29,7 +29,7 @@ header {
       content: "";
       width: 300px;
       height: 220px;
-      background: url("../img/header-bike.png");
+      background: url("./assets/img/header-bike.png");
       background-size: cover;
       position: absolute;
       bottom: -80px;

@@ -1,20 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="scss/styles.css">
-    <script src="vue.min.js"></script>
-    <script src="axios.min.js"></script>
-    <script src="/highcharts.src.js"></script>
-    <script src="/drilldown.src.js"></script>
-    <title>Count My Bike</title>
-</head>
-
-<body>
-    <div class="main-container" id="app">
+<template>
+  <div class="main-container" id="app">
         <header>
             <div class="container">
                 <h1>Count my
@@ -54,7 +40,7 @@
                 <article class="daily-stats chart-01">
                     <h2>Daily stats</h2>
 
-                    <day-to-day-chart class="chart-area" :serie-data="chartData" :selected-day="selectedDay" v-on:select="selectDateDetail"></day-to-day-chart>
+                    <DayToDayChart class="chart-area" :serie-data="chartData" :selected-day="selectedDay" v-on:select="selectDateDetail"></DayToDayChart>
 
                 </article>
                 <article class="daily-stats chart-02">
@@ -97,7 +83,7 @@
         </section>
         <section class="section-interactive-chart">
             <div class="container">
-                <yearly-chart id="year-chart"></yearly-chart>
+                <YearlyChart id="year-chart"></YearlyChart>
                 <ul class="year-facts">
                     <li>
                         <picture>
@@ -134,16 +120,91 @@
             </footer>
         </section>
     </div>
-    <script src="main_vue.js"></script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113167410-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
+</template>
 
-        gtag('config', 'UA-113167410-1');
-    </script> -->
-</body>
+<script>
+// import HelloWorld from "./components/HelloWorld.vue";
 
-</html>
+import { getTruncatedStr, prepareData } from "./utils";
+import DayToDayChart from "./components/DayToDayChart";
+import YearlyChart from "./components/YearlyChart";
+import DetailChart from "./components/DetailChart";
+
+export default {
+  data: () => ({
+    apiResponse: { day: {}, week: {}, month: {} },
+    statByDay: {},
+    statByMinute: {},
+    selectedDay: null
+  }),
+  components: {
+    DayToDayChart,
+    YearlyChart,
+    DetailChart
+  },
+  computed: {
+    chartData: function() {
+      return this.apiResponse.ts ? prepareData(this.apiResponse.ts) : {};
+    },
+    selectedDayString: function() {
+      return getTruncatedStr(this.selectedDay);
+    },
+    detailDayData: function() {
+      if (!this.selectedDay) return null;
+
+      var dayStr =
+        this.selectedDay.getFullYear() +
+        "-" +
+        (parseInt(this.selectedDay.getMonth()) + 1) +
+        "-" +
+        this.selectedDay.getDate();
+
+      return this.chartData["drilldowns"].filter(function(value) {
+        return value.name == dayStr;
+      });
+    },
+    todayCount: function() {
+      return this.apiResponse.day.counter;
+    },
+    weekCount: function() {
+      return this.apiResponse.week.counter;
+    },
+    monthCount: function() {
+      return this.apiResponse.month.counter;
+    },
+    trendsDay: function() {
+      return this.apiResponse.day.trend;
+    }
+  },
+  methods: {
+    selectDateDetail: function(data) {
+      var parts = data.day.split("-");
+      this.selectedDay = new Date(
+        parseInt(parts[0], 10),
+        parseInt(parts[1], 10) - 1,
+        parseInt(parts[2], 10)
+      );
+    },
+    selectPrevious: function() {
+      var newDate = new Date(this.selectedDay);
+      newDate.setDate(newDate.getDate() - 1);
+      this.selectedDay = newDate;
+    },
+    selectNext: function() {
+      var newDate = new Date(this.selectedDay);
+      newDate.setDate(newDate.getDate() + 1);
+      this.selectedDay = newDate;
+    }
+  },
+  created() {
+    var vm = this;
+    this.$http.get("data.json").then(function(response) {
+      vm.apiResponse = response.data;
+    });
+  }
+};
+</script>
+
+<style lang="scss">
+@import "./assets/scss/styles.scss";
+</style>
