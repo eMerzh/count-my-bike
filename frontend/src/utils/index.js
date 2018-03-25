@@ -1,6 +1,5 @@
 import format from "date-fns/format";
-import startOfDay from "date-fns/start_of_day";
-import compareAsc from "date-fns/compare_asc";
+import parse from "date-fns/parse";
 
 /**
  * Format data with daily Average and drilldowns by day
@@ -8,46 +7,30 @@ import compareAsc from "date-fns/compare_asc";
  * @param {Array} allSerieData Array of tupple (int timestamp, value)
  */
 export function prepareData(allSerieData) {
-  var byDayData = [];
-  var drilldowns = {};
-
-  allSerieData.map(item => {
-    const [timestamp, itemValue] = item;
-    var itemDateTime = new Date(timestamp);
-    var truncatedDateTime = startOfDay(itemDateTime);
-
-    const referenceDateIdx = format(itemDateTime, "YYYY-M-D");
-    drilldowns[referenceDateIdx] = drilldowns[referenceDateIdx] || [];
-
-    var itemsDayAndHour = byDayData.find(
-      i => compareAsc(i.date, truncatedDateTime) === 0
-    );
-
-    // if Found in dataByDay, add it to drilldown and data
-    if (itemsDayAndHour) {
-      itemsDayAndHour.value += itemValue;
-      drilldowns[referenceDateIdx].push({
-        x: itemDateTime,
-        y: itemValue
-      });
-
-      return;
-    }
-    byDayData.push({ date: truncatedDateTime, value: itemValue });
-  });
-
-  byDayData = byDayData.map(item => ({
-    x: item.date,
-    name: format(item.date, "YYYY-M-D"),
-    y: item.value,
-    drilldown: format(item.date, "YYYY-M-D")
-  }));
+  // Group data by day ({key: [[min, val],[min,val]] } )
+  const drilldowns = allSerieData.reduce((previousVal, currentVal) => {
+    const timestamp = new Date(currentVal[0]);
+    const referenceDateIdx = format(timestamp, "YYYY-M-D");
+    (previousVal[referenceDateIdx] = previousVal[referenceDateIdx] || []).push({
+      x: timestamp,
+      y: currentVal[1]
+    });
+    return previousVal;
+  }, {});
 
   const drilldownSeries = Object.entries(drilldowns).map(item => ({
     name: item[0],
     id: item[0],
     data: item[1].sort((a, b) => a.x - b.x),
     type: "spline"
+  }));
+
+  // get summary for all days
+  const byDayData = drilldownSeries.map(i => ({
+    x: parse(i.name),
+    name: i.name,
+    y: i.data.reduce((a, b) => a + b.y, 0),
+    drilldown: i.name
   }));
 
   return {
