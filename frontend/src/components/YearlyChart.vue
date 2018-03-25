@@ -92,7 +92,7 @@ export default {
     };
   },
   computed: {
-    cycleData: function() {
+    cycleData() {
       return {
         chart: {
           type: "line",
@@ -121,9 +121,7 @@ export default {
         series: [
           {
             name: "Bike",
-            data: this.yearlyInfographicData.map(function(r) {
-              return [r.year, r.cyclists];
-            }),
+            data: this.yearlyInfographicData.map(r => [r.year, r.cyclists]),
             color: "#E5B363",
             borderWidth: 0,
             marker: {

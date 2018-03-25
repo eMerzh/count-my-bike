@@ -123,9 +123,12 @@
 </template>
 
 <script>
-// import HelloWorld from "./components/HelloWorld.vue";
+import format from "date-fns/format";
+import parse from "date-fns/parse";
+import addDays from "date-fns/add_days";
+import subDays from "date-fns/sub_days";
+import { prepareData } from "./utils";
 
-import { getTruncatedStr, prepareData } from "./utils";
 import DayToDayChart from "./components/DayToDayChart";
 import YearlyChart from "./components/YearlyChart";
 import DetailChart from "./components/DetailChart";
@@ -143,63 +146,51 @@ export default {
     DetailChart
   },
   computed: {
-    chartData: function() {
+    chartData() {
       return this.apiResponse.ts ? prepareData(this.apiResponse.ts) : {};
     },
-    selectedDayString: function() {
-      return getTruncatedStr(this.selectedDay);
+    selectedDayString() {
+      return format(this.selectedDay, "YYYY-M-D");
     },
-    detailDayData: function() {
-      if (!this.selectedDay) return null;
 
-      var dayStr =
-        this.selectedDay.getFullYear() +
-        "-" +
-        (parseInt(this.selectedDay.getMonth()) + 1) +
-        "-" +
-        this.selectedDay.getDate();
+    /**
+    Select the details into the drilldowns of the main chart
+     */
+    detailDayData() {
+      if (!this.selectedDay) return null;
+      var dayStr = format(this.selectedDay, "YYYY-M-D");
 
       return this.chartData["drilldowns"].filter(function(value) {
         return value.name == dayStr;
       });
     },
-    todayCount: function() {
+    todayCount() {
       return this.apiResponse.day.counter;
     },
-    weekCount: function() {
+    weekCount() {
       return this.apiResponse.week.counter;
     },
-    monthCount: function() {
+    monthCount() {
       return this.apiResponse.month.counter;
     },
-    trendsDay: function() {
+    trendsDay() {
       return this.apiResponse.day.trend;
     }
   },
   methods: {
-    selectDateDetail: function(data) {
-      var parts = data.day.split("-");
-      this.selectedDay = new Date(
-        parseInt(parts[0], 10),
-        parseInt(parts[1], 10) - 1,
-        parseInt(parts[2], 10)
-      );
+    selectDateDetail(data) {
+      this.selectedDay = parse(data.day);
     },
-    selectPrevious: function() {
-      var newDate = new Date(this.selectedDay);
-      newDate.setDate(newDate.getDate() - 1);
-      this.selectedDay = newDate;
+    selectPrevious() {
+      this.selectedDay = subDays(this.selectedDay, 1);
     },
-    selectNext: function() {
-      var newDate = new Date(this.selectedDay);
-      newDate.setDate(newDate.getDate() + 1);
-      this.selectedDay = newDate;
+    selectNext() {
+      this.selectedDay = addDays(this.selectedDay, 1);
     }
   },
   created() {
-    var vm = this;
-    this.$http.get("data.json").then(function(response) {
-      vm.apiResponse = response.data;
+    this.$http.get("data.json").then(response => {
+      this.apiResponse = response.data;
     });
   }
 };

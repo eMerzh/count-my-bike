@@ -4,6 +4,7 @@
 
 <script>
 import Chart from "./Chart";
+import endOfDay from "date-fns/end_of_day";
 
 export default {
   props: {
@@ -20,12 +21,10 @@ export default {
     Chart
   },
   computed: {
-    periodEnd: function() {
-      var endDate = new Date(this.selectedDay);
-      endDate.setDate(endDate.getDate() + 1);
-      return endDate;
+    periodEnd() {
+      return endOfDay(this.selectedDay);
     },
-    chartDef: function() {
+    chartDef() {
       return {
         chart: {
           type: "area"
@@ -35,8 +34,8 @@ export default {
         xAxis: {
           type: "datetime",
           lineColor: "#F3F3F3",
-          softMin: this.selectedDay.getTime(),
-          softMax: this.periodEnd.getTime()
+          min: this.selectedDay.getTime(),
+          max: this.periodEnd.getTime() + 1
         },
         tooltip: {
           headerFormat: null,

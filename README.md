@@ -12,6 +12,7 @@ Meteo : [weatherbit](http://weatherbit.io)
 
 ## Installation
 
+### Backend
 You need python2 and mysql database to host the data fetching part and only a
 webserver to host the visualisation part.
 
@@ -35,15 +36,30 @@ then a run (probably with a cron)
 
 you can then serve the "public" folder with any web server :)
 
+### Frontend
+
+To run the frontend you must have yarn installed and go to the `frontend` directory
+then
+
+`yarn install`
+
+and
+
+`yarn serve` or `yarn build` ( build create a deployable file )
+
+then serve the `dist` folder (and be sure to have `data.json` exported by the backend at the root)
+
 ## Quick Todo:
 
 *   [ ] Remove Lorem ipsum
-*   [ ] Add Smart city + Cyclop links
+*   [ ] Add Smart city + Cyclop links ?
+*   [ ] Deploy story
+
+### Wishlist
 *   [ ] Responsive
 *   [ ] Ensure Timezone ready-ness
-*   [ ] Code cleanup
+*   [ ] Backend Code cleanup
 *   [ ] FallBack when API fails ( vrai-o-tron, ...)
-*   [ ] Refactor :)
 
 ## Contributors
 

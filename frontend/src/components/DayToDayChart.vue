@@ -4,7 +4,8 @@
 
 <script>
 import Chart from "./Chart";
-import { getTruncatedStr } from "../utils";
+import format from "date-fns/format";
+
 export default {
   props: {
     serieData: {
@@ -19,20 +20,17 @@ export default {
     Chart
   },
   computed: {
-    dayChartData: function() {
-      var vm = this;
-      if (vm.selectedDay) {
+    dayChartData() {
+      if (this.selectedDay) {
         // Hightlight selected day in chart
-        var selectDateStr = getTruncatedStr(vm.selectedDay);
-        var dayRow = vm.serieData["main"].filter(function(a) {
-          return a.name == selectDateStr;
-        });
-        vm.serieData["main"].forEach(function(item) {
+        var selectDateStr = format(this.selectedDay, "YYYY-M-D");
+        var dayRow = this.serieData["main"].find(a => a.name === selectDateStr);
+        // reset selection state for all
+        this.serieData["main"].forEach(item => {
           item.selected = false;
         });
-
-        if (dayRow[0]) {
-          dayRow[0].selected = true;
+        if (dayRow) {
+          dayRow.selected = true;
         }
       }
       return {
@@ -63,8 +61,11 @@ export default {
             animation: false, //  for refresh of selected
             point: {
               events: {
-                select: function() {
-                  vm.$emit("select", { day: this.name, x: this.x });
+                select: event => {
+                  this.$emit("select", {
+                    day: event.target.name,
+                    x: event.target.x
+                  });
                 }
               }
             },
@@ -83,7 +84,7 @@ export default {
           {
             name: "Bikes Per Day",
             type: "column",
-            data: vm.serieData["main"]
+            data: this.serieData["main"]
           }
         ]
       };

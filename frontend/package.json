@@ -9,6 +9,7 @@
     },
     "dependencies": {
         "axios": "^0.18.0",
+        "date-fns": "^1.29.0",
         "highcharts": "^6.0.7",
         "vue": "^2.5.13"
     },
@@ -18,20 +19,30 @@
         "@vue/cli-plugin-eslint": "^3.0.0-beta.6",
         "@vue/cli-service": "^3.0.0-beta.6",
         "node-sass": "^4.7.2",
+        "prettier": "^1.11.1",
         "sass-loader": "^6.0.7",
         "vue-template-compiler": "^2.5.13"
     },
     "babel": {
-        "presets": ["@vue/app"]
+        "presets": [
+            "@vue/app"
+        ]
     },
     "eslintConfig": {
         "root": true,
-        "extends": ["plugin:vue/essential", "eslint:recommended"]
+        "extends": [
+            "plugin:vue/essential",
+            "eslint:recommended"
+        ]
     },
     "postcss": {
         "plugins": {
             "autoprefixer": {}
         }
     },
-    "browserslist": ["> 1%", "last 2 versions", "not ie <= 8"]
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not ie <= 8"
+    ]
 }
