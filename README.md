@@ -13,6 +13,7 @@ Meteo : [weatherbit](http://weatherbit.io)
 ## Installation
 
 ### Backend
+
 You need python2 and mysql database to host the data fetching part and only a
 webserver to host the visualisation part.
 
@@ -24,17 +25,15 @@ first create a virtualenv:
 
 then install python requirements :
 
-`pip install -r requirements.txt`
+`pip install -r backend/requirements.txt`
 
 then add configuration in the .env file:
 
-`cp env.dist .env`
+`cp backend/env.dist backend/.env`
 
 then a run (probably with a cron)
 
-`python main.py`
-
-you can then serve the "public" folder with any web server :)
+`python backend/main.py`
 
 ### Frontend
 
@@ -56,6 +55,7 @@ then serve the `dist` folder (and be sure to have `data.json` exported by the ba
 *   [ ] Deploy story
 
 ### Wishlist
+
 *   [ ] Responsive
 *   [ ] Ensure Timezone ready-ness
 *   [ ] Backend Code cleanup
