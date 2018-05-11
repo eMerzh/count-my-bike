@@ -11,17 +11,16 @@
         "axios": "^0.18.0",
         "date-fns": "^1.29.0",
         "highcharts": "^6.0.7",
-        "vue": "^2.5.13"
+        "vue": "^2.5.16"
     },
     "devDependencies": {
-        "@vue/cli": "^3.0.0-beta.6",
-        "@vue/cli-plugin-babel": "^3.0.0-beta.6",
-        "@vue/cli-plugin-eslint": "^3.0.0-beta.6",
-        "@vue/cli-service": "^3.0.0-beta.6",
+        "@vue/cli-plugin-babel": "^3.0.0-beta.10",
+        "@vue/cli-plugin-eslint": "^3.0.0-beta.10",
+        "@vue/cli-service": "^3.0.0-beta.10",
+        "vue-template-compiler": "^2.5.13",
         "node-sass": "^4.7.2",
         "prettier": "^1.11.1",
-        "sass-loader": "^6.0.7",
-        "vue-template-compiler": "^2.5.13"
+        "sass-loader": "^6.0.7"
     },
     "babel": {
         "presets": [

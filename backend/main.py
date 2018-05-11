@@ -9,73 +9,21 @@ from StringIO import StringIO
 
 import requests
 from dotenv import find_dotenv, load_dotenv
-from peewee import *
 from raven import Client
 from weatherbit.api import Api
-
-load_dotenv(find_dotenv())
-
-
-if os.environ.get('SENTRY_DSN'):
-    sentry = Client(os.environ.get('SENTRY_DSN'))
-
-db = MySQLDatabase(os.environ.get("DB_NAME"), user=os.environ.get("DB_USER"),
-                   host=os.environ.get("DB_HOST"), password=os.environ.get("DB_PASS"), charset='utf8mb4')
-
-weather_api = Api(os.environ.get('WEATHER_API_KEY'))
-
-API_URL = 'http://data-mobility.brussels/geoserver/bm_bike/wfs?service=wfs&version=1.1.0&request=GetFeature&typeName=bm_bike:rt_counting&outputFormat=csv'
-EXPORT_PATH = os.path.join(os.path.dirname(__file__), 'public/data.json')
-API_TIMEOUT = os.environ.get("API_TIMEOUT", 30)
+from models import BikeCounter, connect_db
 
 
-class BikeCounter(Model):
-    """ Contain the counting data, almost mimic the api fields """
-    class Meta:
-        """ Meta class for peewee db """
-        database = db
+def configure():
+    load_dotenv(find_dotenv())
+    if os.environ.get('SENTRY_DSN'):
+        sentry = Client(os.environ.get('SENTRY_DSN'))
+    db = connect_db(config=os.environ)
 
-    gid = IntegerField()
-    FID = TextField()
-
-    # City
-    mu_fr = TextField()
-    mu_nl = TextField()
-
-    # Other infos
-    info_fr = TextField()
-    info_nl = TextField()
-
-    # Address
-    road_fr = TextField()
-    loc_fr = TextField()
-    housenr = TextField()
-    road_nl = TextField()
-    loc_nl = TextField()
-    pccp = TextField()
-
-    geom = TextField()
-
-    # Counter info
-    counter_id = TextField()
-    # Placement
-    lane_name = TextField()
-    lane_no = TextField()
-
-    # Counter
-    day_cnt = IntegerField()
-    hour_cnt = IntegerField()
-    year_cnt = IntegerField()
-    year_cnt_delta = IntegerField()
-
-    cnt_date = DateTimeField()
-
-    # Meteo Fields
-    precipitation = FloatField(null=True)  # in mm , last 3h
-    temperature = FloatField(null=True)  # in c°
-
-    created_date = DateTimeField(default=datetime.now, index=True)
-    last_seen_date = DateTimeField(default=datetime.now)
+    weather_api = Api(os.environ.get('WEATHER_API_KEY'))
+    API_URL = 'http://data-mobility.brussels/geoserver/bm_bike/wfs?service=wfs&version=1.1.0&request=GetFeature&typeName=bm_bike:rt_counting&outputFormat=csv'
+    EXPORT_PATH = os.path.join(os.path.dirname(__file__), 'public/data.json')
+    API_TIMEOUT = os.environ.get("API_TIMEOUT", 30)
 
 
 def fetch():
@@ -168,5 +116,6 @@ def export():
 
 
 if __name__ == "__main__":
+    configure()
     fetch()
     export()
