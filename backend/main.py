@@ -9,22 +9,83 @@ from StringIO import StringIO
 
 import requests
 from dotenv import find_dotenv, load_dotenv
+from peewee import *
 from raven import Client
 from weatherbit.api import Api
-from models import BikeCounter, connect_db
+
+load_dotenv(find_dotenv())
 
 
-def configure():
-    load_dotenv(find_dotenv())
-    if os.environ.get('SENTRY_DSN'):
-        sentry = Client(os.environ.get('SENTRY_DSN'))
-    db = connect_db(config=os.environ)
+if os.environ.get('SENTRY_DSN'):
+    sentry = Client(os.environ.get('SENTRY_DSN'))
 
-    weather_api = Api(os.environ.get('WEATHER_API_KEY'))
-    API_URL = 'http://data-mobility.brussels/geoserver/bm_bike/wfs?service=wfs&version=1.1.0&request=GetFeature&typeName=bm_bike:rt_counting&outputFormat=csv'
-    EXPORT_PATH = os.path.join(os.path.dirname(__file__), 'public/data.json')
-    API_TIMEOUT = os.environ.get("API_TIMEOUT", 30)
+db = MySQLDatabase(os.environ.get("DB_NAME"), user=os.environ.get("DB_USER"),
+                   host=os.environ.get("DB_HOST"), password=os.environ.get("DB_PASS"), charset='utf8mb4')
 
+weather_api = Api(os.environ.get('WEATHER_API_KEY'))
+
+API_URL = 'http://data-mobility.brussels/geoserver/bm_bike/wfs?service=wfs&version=1.1.0&request=GetFeature&typeName=bm_bike:rt_counting&outputFormat=csv'
+EXPORT_PATH = os.path.join(os.path.dirname(__file__), 'public/data.json')
+API_TIMEOUT = os.environ.get("API_TIMEOUT", 30)
+
+
+class BikeCounter(Model):
+    """ Contain the counting data, almost mimic the api fields """
+    class Meta:
+        """ Meta class for peewee db """
+        database = db
+
+    # gid = IntegerField()
+    # FID = TextField()
+
+    # # City
+    # mu_fr = TextField(default='')
+    # mu_nl = TextField(default='')
+
+    # # Other infos
+    # info_fr = TextField(default='')
+    # info_nl = TextField(default='')
+
+    # # Address
+    # road_fr = TextField(default='')
+    # loc_fr = TextField(default='')
+    # housenr = TextField(default='')
+    # road_nl = TextField(default='')
+    # loc_nl = TextField(default='')
+    # pccp = TextField(default='')
+
+    # geom = TextField(default='')
+
+    # # Counter info
+    # counter_id = TextField(default='')
+    # # Placement
+    # lane_name = TextField(default='')
+    # lane_no = TextField(default='')
+
+    gid = TextField(default='')
+    device_name = TextField(default='')
+    road_nl = TextField(default='')
+    road_fr = TextField(default='')
+    road_en = TextField(default='')
+    descr_nl = TextField(default='')
+    descr_fr = TextField(default='')
+    descr_en = TextField(default='')
+    FID = TextField()
+
+    # Counter
+    day_cnt = IntegerField()
+    hour_cnt = IntegerField()
+    year_cnt = IntegerField()
+    year_cnt_delta = IntegerField()
+
+    cnt_time = DateTimeField()
+
+    # Meteo Fields
+    precipitation = FloatField(null=True)  # in mm , last 3h
+    temperature = FloatField(null=True)  # in c°
+
+    created_date = DateTimeField(default=datetime.now, index=True)
+    last_seen_date = DateTimeField(default=datetime.now)
 
 def fetch():
     """ Fetch counter from api and persist it """
@@ -40,7 +101,7 @@ def fetch():
             last_counter = (
                 BikeCounter
                 .select()
-                .where(BikeCounter.counter_id == row['counter_id'])
+                .where(BikeCounter.device_name == row['device_name'])
                 .order_by(BikeCounter.created_date.desc())
                 .get()
             )
@@ -49,13 +110,15 @@ def fetch():
 
         delta = 0
         if last_counter:
-            ctn_date = datetime.fromtimestamp(time.mktime(time.strptime(row['cnt_date'], "%Y-%m-%dT%H:%M:%S")))
+            ctn_time = datetime.fromtimestamp(time.mktime(time.strptime(row['cnt_time'], "%Y-%m-%dT%H:%M:%S")))
 
             delta = int(row['year_cnt']) - last_counter.year_cnt
-            if last_counter.cnt_date == ctn_date:
+            if last_counter.cnt_time == ctn_time:
                 last_counter.last_seen_date = datetime.now()
                 last_counter.save()
                 continue
+        row['gid'] = row['id']
+        del row['id']
 
         item = BikeCounter.create(
             year_cnt_delta=delta,
@@ -116,6 +179,5 @@ def export():
 
 
 if __name__ == "__main__":
-    configure()
     fetch()
     export()
