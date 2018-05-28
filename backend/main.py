@@ -30,37 +30,10 @@ API_TIMEOUT = os.environ.get("API_TIMEOUT", 30)
 
 
 class BikeCounter(Model):
-    """ Contain the counting data, almost mimic the api fields """
+    """ Contains the counting data, almost mimic the api fields """
     class Meta:
         """ Meta class for peewee db """
         database = db
-
-    # gid = IntegerField()
-    # FID = TextField()
-
-    # # City
-    # mu_fr = TextField(default='')
-    # mu_nl = TextField(default='')
-
-    # # Other infos
-    # info_fr = TextField(default='')
-    # info_nl = TextField(default='')
-
-    # # Address
-    # road_fr = TextField(default='')
-    # loc_fr = TextField(default='')
-    # housenr = TextField(default='')
-    # road_nl = TextField(default='')
-    # loc_nl = TextField(default='')
-    # pccp = TextField(default='')
-
-    # geom = TextField(default='')
-
-    # # Counter info
-    # counter_id = TextField(default='')
-    # # Placement
-    # lane_name = TextField(default='')
-    # lane_no = TextField(default='')
 
     gid = TextField(default='')
     device_name = TextField(default='')
