@@ -110,7 +110,7 @@ def fetch():
 
         delta = 0
         if last_counter:
-            ctn_time = datetime.fromtimestamp(time.mktime(time.strptime(row['cnt_time'], "%Y-%m-%dT%H:%M")))
+            ctn_time = datetime.fromtimestamp(time.mktime(time.strptime(row['cnt_time'], "%Y-%m-%dT%H:%M:%S")))
 
             delta = int(row['year_cnt']) - last_counter.year_cnt
             if last_counter.cnt_time == ctn_time:
